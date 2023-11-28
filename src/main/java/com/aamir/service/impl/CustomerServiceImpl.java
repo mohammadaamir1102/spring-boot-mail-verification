@@ -40,6 +40,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void verify(String email, String otp) {
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer == null) {
+            throw new RuntimeException("User not found");
+        } else if (customer.isVerified()) {
+            throw new RuntimeException("User is already verified");
+        } else if (otp.equals(customer.getOtp())) {
+            customer.setVerified(true);
+            customerRepository.save(customer);
+        } else {
+            throw new RuntimeException("Internal Server error");
+        }
 
     }
 
