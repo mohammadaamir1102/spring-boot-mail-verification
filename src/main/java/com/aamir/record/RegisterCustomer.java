@@ -1,5 +1,5 @@
 package com.aamir.record;
 
 
-public record RegisterCustomer(String userName, String email, String password) {
+public record RegisterCustomer(String customerName, String email, String password) {
 }

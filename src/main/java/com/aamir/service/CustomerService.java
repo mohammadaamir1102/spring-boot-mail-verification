@@ -6,5 +6,5 @@ import com.aamir.record.ResponseCustomer;
 public interface CustomerService {
 
     ResponseCustomer register(RegisterCustomer registerCustomer);
-    void verify(String email, String otp);
+    ResponseCustomer verify(String email, String otp);
 }

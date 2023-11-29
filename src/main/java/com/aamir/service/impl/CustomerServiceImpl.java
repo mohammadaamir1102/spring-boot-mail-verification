@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new RuntimeException("User Already Registered");
         }
         Customer customer = Customer.builder()
-                .userName(registerCustomer.userName())
+                .customerName(registerCustomer.customerName())
                 .email(registerCustomer.email())
                 .password(registerCustomer.password())
                 .build();
@@ -35,11 +35,13 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer savedCustomer = customerRepository.save(customer);
         sendVerificationEmail(savedCustomer.getEmail(), otp);
-        return new ResponseCustomer(customer.getUserName(), customer.getEmail());
+        return new ResponseCustomer(customer.getCustomerId(), customer.getCustomerName(),
+                customer.getEmail(), customer.isVerified());
     }
 
     @Override
-    public void verify(String email, String otp) {
+    public ResponseCustomer verify(String email, String otp) {
+        Customer savedCustomer;
         Customer customer = customerRepository.findByEmail(email);
         if (customer == null) {
             throw new RuntimeException("User not found");
@@ -47,11 +49,12 @@ public class CustomerServiceImpl implements CustomerService {
             throw new RuntimeException("User is already verified");
         } else if (otp.equals(customer.getOtp())) {
             customer.setVerified(true);
-            customerRepository.save(customer);
+            savedCustomer = customerRepository.save(customer);
         } else {
             throw new RuntimeException("Internal Server error");
         }
-
+        return new ResponseCustomer(savedCustomer.getCustomerId(), savedCustomer.getCustomerName(),
+                savedCustomer.getEmail(), savedCustomer.isVerified());
     }
 
     private String generateOTP() {

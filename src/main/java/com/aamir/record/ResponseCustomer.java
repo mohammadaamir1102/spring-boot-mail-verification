@@ -1,4 +1,7 @@
 package com.aamir.record;
 
-public record ResponseCustomer(String userName, String email) {
+import lombok.Builder;
+
+@Builder
+public record ResponseCustomer(Long customerId, String customerName, String email, boolean verified) {
 }
