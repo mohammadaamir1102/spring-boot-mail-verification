@@ -18,7 +18,7 @@ public class CaptchaController {
     @Autowired
     private CaptchaUtil captchaUtil;
 
-    @GetMapping("getCaptcha")
+    @GetMapping("/getCaptcha")
     public List<String> generatedEncodedCaptcha() {
         List<String> responseList = new ArrayList<>();
         try {
